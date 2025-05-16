@@ -74,3 +74,21 @@ def listar_agendamentos_por_usuario(usuario_id):
     resultados = cursor.fetchall()
     conn.close()
     return resultados
+
+def atualizar_agendamento(agendamento_id, data, horario, profissional):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE agendamentos
+        SET data = ?, horario = ?, profissional = ?
+        WHERE id = ?
+    """, (data, horario, profissional, agendamento_id))
+    conn.commit()
+    conn.close()
+
+def deletar_agendamento(agendamento_id):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM agendamentos WHERE id = ?", (agendamento_id,))
+    conn.commit()
+    conn.close()
