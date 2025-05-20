@@ -53,7 +53,40 @@ def criar_tabela_agendamentos():
     conn.commit()
     conn.close()
 
+def criar_tabela_profissionais():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS profissionais (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+def listar_profissionais():
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("SELECT nome FROM profissionais")
+    resultados = [row[0] for row in cursor.fetchall()]
+    conn.close()
+    return resultados
+
+def existe_agendamento(profissional, data, horario):
+    conn = conectar()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT COUNT(*) FROM agendamentos
+        WHERE profissional = ? AND data = ? AND horario = ?
+    """, (profissional, data, horario))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado[0] > 0
+
 def salvar_agendamento(usuario_id, data, horario, profissional):
+    if existe_agendamento(profissional, data, horario):
+        return False
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
@@ -62,12 +95,14 @@ def salvar_agendamento(usuario_id, data, horario, profissional):
     """, (usuario_id, data, horario, profissional))
     conn.commit()
     conn.close()
+    return True
+
 
 def listar_agendamentos_por_usuario(usuario_id):
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT data, horario, profissional FROM agendamentos
+        SELECT id, data, horario, profissional FROM agendamentos
         WHERE usuario_id = ?
         ORDER BY data, horario
     """, (usuario_id,))
@@ -76,6 +111,20 @@ def listar_agendamentos_por_usuario(usuario_id):
     return resultados
 
 def atualizar_agendamento(agendamento_id, data, horario, profissional):
+    # Verifica se já existe um agendamento igual com outro ID
+    if existe_agendamento(profissional, data, horario):
+        conn = conectar()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id FROM agendamentos
+            WHERE profissional = ? AND data = ? AND horario = ?
+        """, (profissional, data, horario))
+        resultado = cursor.fetchone()
+        if resultado and resultado[0] != agendamento_id:
+            conn.close()
+            return False
+        conn.close()
+    
     conn = conectar()
     cursor = conn.cursor()
     cursor.execute("""
@@ -85,6 +134,7 @@ def atualizar_agendamento(agendamento_id, data, horario, profissional):
     """, (data, horario, profissional, agendamento_id))
     conn.commit()
     conn.close()
+    return True
 
 def deletar_agendamento(agendamento_id):
     conn = conectar()

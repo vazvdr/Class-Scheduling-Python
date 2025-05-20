@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+from datetime import datetime, timedelta
 from tkinter import messagebox
 from database import (
     criar_tabela,
@@ -61,7 +62,8 @@ def tela_cadastro():
         nome = entry_nome.get()
         email = entry_email.get()
         senha = entry_senha.get()
-        sucesso = cadastrar_usuario(nome, email, senha)
+        telefone = entry_telefone.get()
+        sucesso = cadastrar_usuario(nome, email, senha, telefone)
         if sucesso:
             messagebox.showinfo("Cadastro", "Usuário cadastrado com sucesso!")
             janela.destroy()
@@ -83,7 +85,7 @@ def tela_cadastro():
     frame.pack(expand=True)
 
     # Título centralizado
-    tk.Label(frame, text="Cadastro", font=("Helvetica", 16, "bold"), bg="black", fg="white").grid(row=0, column=0, columnspan=2, pady=10)
+    tk.Label(frame, text="Cadastro", font=("Helvetica", 16, "bold"), bg="black", fg="white").grid(row=0, column=0, columnspan=2, pady=7)
 
     tk.Label(frame, text="Nome", bg="black", fg="white").grid(row=1, column=0, pady=5, sticky="w")
     entry_nome = tk.Entry(frame, width=30, bg="gray20", fg="white", insertbackground="white")
@@ -97,8 +99,12 @@ def tela_cadastro():
     entry_senha = tk.Entry(frame, show="*", width=30, bg="gray20", fg="white", insertbackground="white")
     entry_senha.grid(row=3, column=1, pady=5)
 
-    tk.Button(frame, text="Cadastrar", command=fazer_cadastro, bg="green", fg="white").grid(row=4, column=1, pady=10, sticky="e")
-    tk.Button(frame, text="Voltar", command=voltar, bg="gray30", fg="white").grid(row=4, column=0, pady=10, sticky="w")
+    tk.Label(frame, text="Telefone", bg="black", fg="white").grid(row=4, column=0, pady=5, sticky="w")
+    entry_telefone = tk.Entry(frame, show="*", width=30, bg="gray20", fg="white", insertbackground="white")
+    entry_telefone.grid(row=4, column=1, pady=5)
+
+    tk.Button(frame, text="Cadastrar", command=fazer_cadastro, bg="green", fg="white").grid(row=5, column=1, pady=10, sticky="e")
+    tk.Button(frame, text="Voltar", command=voltar, bg="gray30", fg="white").grid(row=5, column=0, pady=10, sticky="w")
 
     janela.mainloop()
 
@@ -200,7 +206,8 @@ def tela_agendamento(usuario_id, nome_usuario):
     style.configure("Treeview", background="black", foreground="white", fieldbackground="black")
     style.configure("Treeview.Heading", background="gray20", foreground="white")
 
-    tree = ttk.Treeview(frame, columns=("data", "horario", "profissional"), show="headings")
+    tree = ttk.Treeview(frame, columns=("id", "data", "horario", "profissional"), show="headings")
+    tree.heading("id", text="ID")
     tree.heading("data", text="Data")
     tree.heading("horario", text="Horário")
     tree.heading("profissional", text="Profissional")
@@ -220,15 +227,18 @@ def tela_agendamento(usuario_id, nome_usuario):
         selected = tree.focus()
         if selected:
             values = tree.item(selected)["values"]
-            agendamento_selecionado.set(values[0])
-            entry_data.delete(0, tk.END)
-            entry_data.insert(0, values[0])
-            entry_horario.delete(0, tk.END)
-            entry_horario.insert(0, values[1])
-            entry_profissional.delete(0, tk.END)
-            entry_profissional.insert(0, values[2])
-            btn_atualizar.config(state="normal")
-            btn_deletar.config(state="normal")
+            if values:
+                agendamento_selecionado.set(values[0])  # ID do agendamento
+                entry_data.delete(0, tk.END)
+                entry_data.insert(0, values[1])  # data
+                entry_horario.delete(0, tk.END)
+                entry_horario.insert(0, values[2])  # horário
+                entry_profissional.delete(0, tk.END)
+                entry_profissional.insert(0, values[3])  # profissional
+                btn_atualizar.config(state="normal")
+                btn_deletar.config(state="normal")
+
+
 
     tree.bind("<<TreeviewSelect>>", on_select)
 
@@ -236,11 +246,12 @@ def tela_agendamento(usuario_id, nome_usuario):
     janela.mainloop()
 
 def tela_editar():
-    def fazer_cadastro():
+    def editar():
         nome = entry_nome.get()
         email = entry_email.get()
         senha = entry_senha.get()
-        sucesso = cadastrar_usuario(nome, email, senha)
+        telefone = entry_telefone.get()
+        sucesso = editar_usuario(nome, email, senha, telefone)
         if sucesso:
             messagebox.showinfo("Cadastro", "Usuário cadastrado com sucesso!")
             janela.destroy()
@@ -276,8 +287,12 @@ def tela_editar():
     entry_senha = tk.Entry(frame, show="*", width=30, bg="gray20", fg="white", insertbackground="white")
     entry_senha.grid(row=3, column=1, pady=5)
 
-    tk.Button(frame, text="Voltar", command=voltar, bg="gray30", fg="white").grid(row=4, column=0, pady=10, sticky="w")
-    tk.Button(frame, text="Atualizar", command=fazer_cadastro, bg="blue", fg="white").grid(row=4, column=1, pady=10, sticky="e")
+    tk.Label(frame, text="Telefone", bg="black", fg="white").grid(row=4, column=0, pady=5, sticky="w")
+    entry_telefone = tk.Entry(frame, show="*", width=30, bg="gray20", fg="white", insertbackground="white")
+    entry_telefone.grid(row=4, column=1, pady=5)
+
+    tk.Button(frame, text="Voltar", command=voltar, bg="gray30", fg="white").grid(row=5, column=0, pady=10, sticky="w")
+    tk.Button(frame, text="Atualizar", command=editar, bg="blue", fg="white").grid(row=5, column=1, pady=10, sticky="e")
 
     janela.mainloop()
 
