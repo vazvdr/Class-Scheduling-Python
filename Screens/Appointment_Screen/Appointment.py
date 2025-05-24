@@ -28,27 +28,39 @@ def appointment_screen():
 
     # Caminho absoluto para a imagem, relativo ao script atual
     base_path = os.path.dirname(os.path.abspath(__file__))
-    image_path = os.path.join(base_path, "Screens", "Appointment_Screen", "exit.png")
+    image_path = os.path.join(base_path, "exit.png")
 
-    # Tenta carregar a imagem, se der erro, mostra mensagem e cria botão sem imagem
+    # Debug: mostra o caminho final
+    print(f"Base path: {base_path}")
+    print(f"Image path: {image_path}")
+
     try:
+        if not os.path.exists(image_path):
+            raise FileNotFoundError(f"Arquivo não encontrado: {image_path}")
+
         image = Image.open(image_path)
-        print(image_path)
         exit_icon = ctk.CTkImage(light_image=image, dark_image=image, size=(20, 20))
     except Exception as e:
         messagebox.showerror("Erro", f"Imagem não encontrada: {image_path}\n{e}")
         exit_icon = None
 
-    if exit_icon is not None:
-        btn_exit = ctk.CTkButton(top_frame, text="sair",command=lambda:(kill_screen(),login_screen()), image=exit_icon, fg_color="white", width=30)
-        btn_exit.image = exit_icon  # mantém referência para evitar garbage collector
-    else:
-        btn_exit = ctk.CTkButton(top_frame, text="sair", fg_color="white",command=lambda:(kill_screen(),login_screen()), width=30)
+    btn_exit = ctk.CTkButton(
+        top_frame,
+        text="",
+        command=lambda: (kill_screen(), login_screen()),
+        image=exit_icon if exit_icon else None,
+        fg_color="white",  # fundo escuro para garantir contraste
+        width=5,
+        height=20,
+        compound="left"  # mostra a imagem à esquerda do texto
+    )
 
+    if exit_icon:
+      btn_exit.image = exit_icon
     btn_exit.pack(side="right", padx=5)
 
     btn_edit = ctk.CTkButton(top_frame, text="Editar Perfil",command=edit_screen, fg_color="#1B03A3")
-    btn_edit.pack(side="right", padx=5)
+    btn_edit.pack(side="right")
 
     # Container principal
     container_frame = ctk.CTkFrame(app)
