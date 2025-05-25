@@ -9,7 +9,7 @@
 ```bash
 pip install customtkinter
 pip install pillow
-
+```
 ## Descrição do projeto 
 Desenvolvemos uma aplicação para o controle de aulas particulares 
 agendadas, na qual o professor cadastrado no sistema possui a visão das
