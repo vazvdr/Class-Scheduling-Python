@@ -29,6 +29,44 @@ def cadastrar_usuario(nome, email, senha):
     finally:
         conn.close()
 
+def atualizar_usuario(usuario_id, email, senha):
+    try:
+        conn = sqlite3.connect("usuarios.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT id FROM usuarios WHERE email = ? AND id != ?", (email, usuario_id))
+        if cursor.fetchone():
+            conn.close()
+            return False
+
+        cursor.execute(
+            "UPDATE usuarios SET email = ?, senha = ? WHERE id = ?",
+            (email, senha, usuario_id)
+        )
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Erro ao atualizar usuário:", e)
+        return False
+
+def deletar_usuario(usuario_id):
+    try:
+        conn = sqlite3.connect("usuarios.db")
+        cursor = conn.cursor()
+
+        cursor.execute("DELETE FROM agendamentos WHERE usuario_id = ?", (usuario_id,))
+        
+        cursor.execute("DELETE FROM usuarios WHERE id = ?", (usuario_id,))
+        
+        conn.commit()
+        conn.close()
+        return True
+    except Exception as e:
+        print("Erro ao deletar usuário:", e)
+        return False
+
+
 def verificar_login(email, senha):
     conn = conectar()
     cursor = conn.cursor()
@@ -110,8 +148,21 @@ def listar_agendamentos_por_usuario(usuario_id):
     conn.close()
     return resultados
 
+def listar_agendamentos_por_data(data):
+    conexao = sqlite3.connect("usuarios.db")
+    cursor = conexao.cursor()
+
+    cursor.execute("""
+        SELECT id, data, horario, profissional
+        FROM agendamentos
+        WHERE data = ?
+    """, (data,))
+
+    agendamentos = cursor.fetchall()
+    conexao.close()
+    return agendamentos
+
 def atualizar_agendamento(agendamento_id, data, horario, profissional):
-    # Verifica se já existe um agendamento igual com outro ID
     if existe_agendamento(profissional, data, horario):
         conn = conectar()
         cursor = conn.cursor()
