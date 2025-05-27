@@ -77,12 +77,5 @@ def signup_screen():
 
     app.mainloop()
    
-# Functions
-def submit(entry_name,entry_email,entry_password):
-    name = entry_name.get()
-    email = entry_email.get()
-    password = entry_password.get()
-    messagebox.showinfo("Form Submitted", f"Name:{name}\n Email: {email}\nPassword: {'*' * len(password)}")
-
 def login_screen():
     logi.login_screen()

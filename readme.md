@@ -9,6 +9,7 @@
 ```bash
 pip install customtkinter
 pip install pillow
+pip install tkcalendar
 ```
 ## Descrição do projeto 
 Desenvolvemos uma aplicação para o controle de aulas particulares 

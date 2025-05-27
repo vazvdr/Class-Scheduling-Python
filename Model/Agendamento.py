@@ -1,10 +1,20 @@
 class Agendamento:
-    def __init__(self, nome: str, data: str, horario: str, endereco: str):
+    def __init__(self, nome: str, data: str, horario: str, endereco: str, professor: str, id: int = None):
+        self._id = id
         self._nome = nome
         self._data = data
         self._horario = horario
         self._endereco = endereco
+        self._professor = professor
 
+    # Getter e Setter para id
+    @property
+    def id(self):
+        return self._id
+
+    @id.setter
+    def id(self, value):
+        self._id = value
     # Getter e Setter para nome
     @property
     def nome(self):
@@ -40,3 +50,12 @@ class Agendamento:
     @endereco.setter
     def endereco(self, value):
         self._endereco = value
+
+    # Getter e Setter para professor
+    @property
+    def professor(self):
+        return self._professor
+
+    @professor.setter
+    def professor(self, value):
+        self._professor = value

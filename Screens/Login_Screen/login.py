@@ -47,10 +47,12 @@ def submit(entry_email, entry_password, app):
     password = entry_password.get()
     
     if email != "" and password != "":
-        if authenticate_user(email, password):
-            messagebox.showinfo("Login realizado", f"Bem-vindo, {email}!")
+        user = authenticate_user(email, password)
+        if user:
+            nome = user[1]  # Supondo que o nome é a segunda coluna do SELECT
+            messagebox.showinfo("Login realizado", f"Bem-vindo, {nome}!")
             app.destroy()
-            appo.appointment_screen()
+            appo.appointment_screen(nome)
         else:
             messagebox.showerror("Erro", "Email ou senha incorretos.")
     else:
