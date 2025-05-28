@@ -26,7 +26,7 @@ def tela_cadastro():
     janela.title("Cadastro")
     janela.geometry("600x600")
     janela.configure(bg="black")
-    janela.resizable(True, True)
+    janela.resizable(False, False)
 
     frame = tk.Frame(janela, bg="black")  # type: ignore
     frame.pack(expand=True)

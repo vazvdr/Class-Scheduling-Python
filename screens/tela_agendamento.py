@@ -13,7 +13,7 @@ def tela_agendamento(usuario_id, nome_usuario):
     janela = tk.Tk()
     janela.title("Agendamentos")
     janela.geometry("600x600")
-    janela.resizable(True, True)
+    janela.resizable(False, False)
     janela.configure(bg="black")
 
     def sair():

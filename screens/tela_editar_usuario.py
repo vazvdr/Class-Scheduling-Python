@@ -43,7 +43,7 @@ def tela_editar_usuario(usuario_id, nome_usuario):
     janela.title("Editar Usuário")
     janela.geometry("600x600")
     janela.configure(bg="black")
-    janela.resizable(True, True)
+    janela.resizable(False, False)
 
     frame = tk.Frame(janela, bg="black")
     frame.pack(expand=True)
