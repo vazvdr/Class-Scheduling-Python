@@ -1,8 +1,8 @@
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
-from screens.tela_agendamento import tela_agendamento
-from screens.tela_cadastro import tela_cadastro
+from views.tela_agendamento import tela_agendamento
+from views.tela_cadastro import tela_cadastro
 from controllers.usuario_controller import verificar_login
 
 def tela_login():
@@ -11,9 +11,9 @@ def tela_login():
         senha = entry_senha.get()
         user = verificar_login(email, senha)
         if user:
-            messagebox.showinfo("Sucesso", f"Bem-vindo, {user[1]}!")
+            messagebox.showinfo("Sucesso", f"Bem-vindo, {user.nome}!")
             janela.destroy()
-            tela_agendamento(user[0], user[1])
+            tela_agendamento(user.nome, user.nome)
         else:
             messagebox.showerror("Erro", "Email ou senha inválidos.")
 

@@ -18,12 +18,12 @@ def tela_agendamento(usuario_id, nome_usuario):
 
     def sair():
         janela.destroy()
-        from screens.tela_login import tela_login
+        from views.tela_login import tela_login
         tela_login()
     
     def editar_usuario():
         janela.destroy()
-        from screens.tela_editar_usuario import tela_editar_usuario
+        from views.tela_editar_usuario import tela_editar_usuario
         tela_editar_usuario(usuario_id, nome_usuario)
 
     btn_editar = tk.Button(janela, text="Editar perfil", bg="blue", fg="white", command=editar_usuario)

@@ -12,23 +12,23 @@ def tela_cadastro():
         if sucesso:
             messagebox.showinfo("Cadastro", "Usuário cadastrado com sucesso!")
             janela.destroy()
-            from screens.tela_login import tela_login  # importação atrasada
+            from views.tela_login import tela_login  # importação atrasada
             tela_login()
         else:
             messagebox.showerror("Erro", "Email já cadastrado.")
 
     def voltar():
         janela.destroy()
-        from screens.tela_login import tela_login  # importação atrasada
+        from views.tela_login import tela_login 
         tela_login()
 
-    janela = tk.Tk()  # type: ignore
+    janela = tk.Tk()  
     janela.title("Cadastro")
     janela.geometry("600x600")
     janela.configure(bg="black")
     janela.resizable(False, False)
 
-    frame = tk.Frame(janela, bg="black")  # type: ignore
+    frame = tk.Frame(janela, bg="black")  
     frame.pack(expand=True)
 
     tk.Label(frame, text="Cadastro", font=("Helvetica", 16, "bold"), bg="black", fg="white").grid(row=0, column=0, columnspan=2, pady=7)

@@ -14,7 +14,7 @@ def tela_editar_usuario(usuario_id, nome_usuario):
             if sucesso:
                 messagebox.showinfo("Sucesso", "Dados atualizados com sucesso!")
                 janela.destroy()
-                from screens.tela_agendamento import tela_agendamento
+                from views.tela_agendamento import tela_agendamento
                 tela_agendamento(usuario_id, nome_usuario)
             else:
                 messagebox.showerror("Erro", "Email já cadastrado por outro usuário.")
@@ -29,14 +29,14 @@ def tela_editar_usuario(usuario_id, nome_usuario):
             if sucesso:
                 messagebox.showinfo("Conta excluída", "Sua conta foi excluída com sucesso.")
                 janela.destroy()
-                from screens.tela_login import tela_login
+                from views.tela_login import tela_login
                 tela_login()
             else:
                 messagebox.showerror("Erro", "Erro ao excluir a conta.")
 
     def voltar():
         janela.destroy()
-        from screens.tela_agendamento import tela_agendamento
+        from views.tela_agendamento import tela_agendamento
         tela_agendamento(usuario_id, nome_usuario)
 
     janela = tk.Tk()
